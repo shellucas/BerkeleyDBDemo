@@ -3,6 +3,7 @@ import com.shellucas.Models.Student;
 import com.sleepycat.je.*;
 
 import java.io.*;
+import java.util.Objects;
 
 public class Main {
 
@@ -14,16 +15,17 @@ public class Main {
 		Database db = createDB(env);
 		
 		Student s1 = new Student(0, "Shelby", "Hendrikcx", 24);
-		boolean studentInserted = insertPerson(s1, env, db);
-		
-		if (studentInserted) {
-			System.out.println("Student has been inserted");
-		} else {
-			System.out.println("Failed to insert student");
+		Student studentInserted = (Student) insertPerson(s1, env, db);
+
+		if (studentInserted != null) {
+			System.out.printf("Student inserted: \n%s\n", studentInserted);
 		}
 		
-		Person p1 = getPerson(s1.getId(), env, db);
-		System.out.println(p1.getAge());
+		Student p1 = (Student) getPerson(s1.getId(), env, db);
+
+		if (p1 != null) {
+			System.out.println(p1);
+		}
 	}
 
 	private static Database createDB(Environment env) {
@@ -38,7 +40,7 @@ public class Main {
 
 	private static Environment createENV() {
 		Environment env;
-		final File jarFile = new File(ClassLoader.getSystemClassLoader().getResource(".").getPath());
+		final File jarFile = new File(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResource(".")).getPath());
 		final File envDir = new File(jarFile.getPath() + dbLocation);
 		boolean dirCreated = envDir.mkdirs();
 
@@ -54,7 +56,7 @@ public class Main {
 		return env;
 	}
 	
-	private static boolean insertPerson(Person person, Environment env, Database db) {
+	private static Person insertPerson(Person person, Environment env, Database db) {
 		Transaction transaction = env.beginTransaction(null, null);
 		DatabaseEntry key = new DatabaseEntry(String.valueOf(person.getId()).getBytes());
 		DatabaseEntry data = null;
@@ -65,7 +67,7 @@ public class Main {
 		}
 		
 		if (data == null) {
-			return false;
+			return null;
 		}
 		
 		OperationStatus res = db.putNoOverwrite(transaction, key, data);
@@ -73,11 +75,16 @@ public class Main {
 		if (res != OperationStatus.SUCCESS) {
 			System.out.println("Error: " + res.toString());
 			transaction.abort();
-			return false;
+			return null;
 		} else {
+			try {
+				person = (Person) bytesToObject(data.getData());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			System.out.println(key + "/" + data);
 			transaction.commit();
-			return true;
+			return person;
 		}
 	}
 	
