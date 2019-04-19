@@ -1,9 +1,6 @@
-package com.shellucas;
-
 import com.sleepycat.je.Database;
 import com.sleepycat.je.DatabaseConfig;
 import com.sleepycat.je.DatabaseEntry;
-import com.sleepycat.je.DatabaseException;
 import com.sleepycat.je.Environment;
 import com.sleepycat.je.EnvironmentConfig;
 import com.sleepycat.je.OperationStatus;
@@ -11,14 +8,15 @@ import com.sleepycat.je.Transaction;
 
 import java.io.File;
 
-public class Main {
+public class ExampleMain {
 
     public static void main(String[] args) {
 	// write your code here
         Database db = null;
         Environment env = null;
         try {
-            final File envDir = new File("data/je");
+            final File jarFile = new File(ClassLoader.getSystemClassLoader().getResource(".").getPath());
+            final File envDir = new File(jarFile.getPath() + "/data/je");
             envDir.mkdirs();
             final EnvironmentConfig envConfig = new EnvironmentConfig();
             envConfig.setTransactional(true);
@@ -41,19 +39,18 @@ public class Main {
         DatabaseEntry key = new DatabaseEntry("key2".getBytes());
         DatabaseEntry data = new DatabaseEntry("data1".getBytes());
         String result = null;
-//        OperationStatus res = db.put(transaction, key, data);
-//        if (res != OperationStatus.SUCCESS) {
-//            result = "Error: " + res.toString();
-//        } else {
-//            result = key + "/" + data;
-//        }
-//        transaction.commit();
+        OperationStatus res = db.put(transaction, key, data);
+        if (res != OperationStatus.SUCCESS) {
+            result = "Error: " + res.toString();
+        } else {
+            result = key + "/" + data;
+        }
+        transaction.commit();
 
         System.out.println("JE " + "did put of: " + result);
         transaction = env.beginTransaction(null, null);
         data = new DatabaseEntry();
 
-        OperationStatus res;
         res = db.get(transaction, key, data, null);
         if (res != OperationStatus.SUCCESS) {
             result = "Error: " + res.toString();
