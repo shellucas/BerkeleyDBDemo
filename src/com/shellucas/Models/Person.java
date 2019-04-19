@@ -1,11 +1,17 @@
 package com.shellucas.Models;
 
+import com.sleepycat.persist.model.Entity;
+import com.sleepycat.persist.model.PrimaryKey;
+
 import java.io.Serializable;
 import java.util.StringJoiner;
 
+@Entity
 public abstract class Person implements Serializable {
-
+	
+	@PrimaryKey
 	private int id;
+	
 	private String firstName;
 	private String lastName;
 	private int age;

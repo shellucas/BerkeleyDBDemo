@@ -8,7 +8,7 @@ class PersonHandler implements Handler<Person> {
   
   @Nullable
   public Person insert(@NotNull Person person, @NotNull Environment env, @NotNull Database db) {
-    Transaction transaction = env.beginTransaction(null, null);
+    Transaction transaction = DatabaseHandler.createTransaction(env);
     DatabaseEntry key = new DatabaseEntry(String.valueOf(person.getId()).getBytes());
     DatabaseEntry data = null;
     try {
@@ -45,8 +45,8 @@ class PersonHandler implements Handler<Person> {
       System.out.println("No entry found to update/replace!");
       return null;
     }
-    
-    Transaction transaction = env.beginTransaction(null, null);
+  
+    Transaction transaction = DatabaseHandler.createTransaction(env);
     DatabaseEntry key = new DatabaseEntry(String.valueOf(person.getId()).getBytes());
     DatabaseEntry data = null;
     try {
@@ -79,7 +79,7 @@ class PersonHandler implements Handler<Person> {
   
   @Override
   public boolean delete(int id, @NotNull Environment env, @NotNull Database db) {
-    Transaction transaction = env.beginTransaction(null, null);
+    Transaction transaction = DatabaseHandler.createTransaction(env);
     DatabaseEntry key = new DatabaseEntry(String.valueOf(id).getBytes());
   
     OperationStatus res = db.delete(transaction, key);
@@ -95,7 +95,7 @@ class PersonHandler implements Handler<Person> {
   
   @Nullable
   public Person get(int id, @NotNull Environment env, @NotNull Database db) {
-    Transaction transaction = env.beginTransaction(null, null);
+    Transaction transaction = DatabaseHandler.createTransaction(env);
     DatabaseEntry data = new DatabaseEntry();
     DatabaseEntry key = new DatabaseEntry(String.valueOf(id).getBytes());
     

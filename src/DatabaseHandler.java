@@ -1,7 +1,4 @@
-import com.sleepycat.je.Database;
-import com.sleepycat.je.DatabaseConfig;
-import com.sleepycat.je.Environment;
-import com.sleepycat.je.EnvironmentConfig;
+import com.sleepycat.je.*;
 
 import java.io.File;
 import java.util.Objects;
@@ -34,6 +31,12 @@ class DatabaseHandler {
     env = new Environment(envDir, envConfig);
     
     return env;
+  }
+  
+  static Transaction createTransaction(Environment env) {
+    TransactionConfig transactionConfig = new TransactionConfig();
+    transactionConfig.setDurability(Durability.COMMIT_SYNC);
+    return env.beginTransaction(null, transactionConfig);
   }
   
 }
