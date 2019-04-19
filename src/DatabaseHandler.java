@@ -1,7 +1,11 @@
 import com.sleepycat.je.*;
+import com.sleepycat.je.rep.CommitPointConsistencyPolicy;
+import com.sleepycat.je.rep.utilint.RepUtils;
 
 import java.io.File;
 import java.util.Objects;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 class DatabaseHandler {
   
@@ -35,7 +39,13 @@ class DatabaseHandler {
   
   static Transaction createTransaction(Environment env) {
     TransactionConfig transactionConfig = new TransactionConfig();
+    CommitToken token =  new CommitToken(UUID.randomUUID(), 1);
+    ReplicaConsistencyPolicy policy = new CommitPointConsistencyPolicy(token, 2, TimeUnit.MINUTES);
+    
     transactionConfig.setDurability(Durability.COMMIT_SYNC);
+    transactionConfig.setConsistencyPolicy(policy);
+    transactionConfig.setLocalWrite(true);
+    transactionConfig.setReadCommitted(true);
     return env.beginTransaction(null, transactionConfig);
   }
   
