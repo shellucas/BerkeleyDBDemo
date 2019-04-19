@@ -10,7 +10,7 @@ public class Main {
 		Environment env = DatabaseHandler.createENV(dbLocation);
 		Database db = DatabaseHandler.createDB(env, dbName);
 		
-		Student s1 = new Student(0, "Shelby", "Hendrikcx", 24);
+		Student s1 = new Student(0, "Shelby", "Hendrickx", 24);
 		Student studentInserted = (Student) PersonHandler.insertPerson(s1, env, db);
 
 		if (studentInserted != null) {
