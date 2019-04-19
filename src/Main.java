@@ -10,15 +10,51 @@ public class Main {
 		Environment env = DatabaseHandler.createENV(dbLocation);
 		Database db = DatabaseHandler.createDB(env, dbName);
 		
+		PersonHandler personHandler = new PersonHandler();
+		
+		System.out.println("----------INSERT----------");
 		Student s1 = new Student(0, "Shelby", "Hendrickx", 24);
-		Student studentInserted = (Student) PersonHandler.insertPerson(s1, env, db);
+		Student studentInserted = (Student) personHandler.insert(s1, env, db);
 
 		if (studentInserted != null) {
 			System.out.printf("Student inserted: \n%s\n", studentInserted);
 		}
 		
-		Student p1 = (Student) PersonHandler.getPerson(s1.getId(), env, db);
+		System.out.println("----------GET----------");
+		Student p1 = (Student) personHandler.get(s1.getId(), env, db);
 
+		if (p1 != null) {
+			System.out.println(p1);
+		}
+		
+		System.out.println("----------PUT----------");
+		Student s2 = new Student(1, "Lucas", "van der Laan", 19);
+		Student studentUpdated = (Student) personHandler.put(s2, env, db);
+		
+		if (studentUpdated != null) {
+			System.out.printf("Student updated: \n%s\n", studentUpdated);
+		}
+		
+		System.out.println("----------PUT----------");
+		s1.setAge(19);
+		s1.setFirstName("Lucas");
+		s1.setLastName("van der Laan");
+		studentUpdated = (Student) personHandler.put(s1, env, db);
+		
+		if (studentUpdated != null) {
+			System.out.printf("Student updated: \n%s\n", studentUpdated.getFirstName());
+		}
+		
+		System.out.println("----------DELETE----------");
+		boolean deleted =  personHandler.delete(s1.getId(), env, db);
+		
+		if (deleted) {
+			System.out.println(p1);
+		}
+		
+		System.out.println("----------GET----------");
+		p1 = (Student) personHandler.get(s1.getId(), env, db);
+		
 		if (p1 != null) {
 			System.out.println(p1);
 		}

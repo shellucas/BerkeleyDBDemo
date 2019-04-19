@@ -31,4 +31,16 @@ public abstract class Person implements Serializable {
 	public int getAge() {
 		return age;
 	}
+	
+	public void setAge(int age) {
+		this.age = age;
+	}
+	
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 }
