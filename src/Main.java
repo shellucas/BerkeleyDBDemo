@@ -42,14 +42,14 @@ public class Main {
 		studentUpdated = (Student) personHandler.put(s1, env, db);
 		
 		if (studentUpdated != null) {
-			System.out.printf("Student updated: \n%s\n", studentUpdated.getFirstName());
+			System.out.printf("Student updated: \n%s\n", studentUpdated);
 		}
 		
 		System.out.println("----------DELETE----------");
 		boolean deleted =  personHandler.delete(s1.getId(), env, db);
 		
 		if (deleted) {
-			System.out.println(p1);
+			System.out.println(s1);
 		}
 		
 		System.out.println("----------GET----------");

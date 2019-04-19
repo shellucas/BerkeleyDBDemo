@@ -1,6 +1,7 @@
 package com.shellucas.Models;
 
 import java.io.Serializable;
+import java.util.StringJoiner;
 
 public abstract class Person implements Serializable {
 
@@ -42,5 +43,15 @@ public abstract class Person implements Serializable {
 	
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+	
+	@Override
+	public String toString() {
+		return new StringJoiner(", ", Person.class.getSimpleName() + "[", "]")
+						.add("id=" + id)
+						.add("firstName='" + firstName + "'")
+						.add("lastName='" + lastName + "'")
+						.add("age=" + age)
+						.toString();
 	}
 }
