@@ -1,3 +1,5 @@
+package com.shellucas;
+
 import com.shellucas.models.Student;
 import com.sleepycat.je.*;
 

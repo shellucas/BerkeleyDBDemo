@@ -1,4 +1,4 @@
-package com.shellucas.Models;
+package com.shellucas.models;
 
 import com.sleepycat.persist.model.Entity;
 import com.sleepycat.persist.model.PrimaryKey;

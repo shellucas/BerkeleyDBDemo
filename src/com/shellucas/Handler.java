@@ -1,3 +1,5 @@
+package com.shellucas;
+
 import com.shellucas.models.Person;
 import com.sleepycat.je.Database;
 import com.sleepycat.je.Environment;

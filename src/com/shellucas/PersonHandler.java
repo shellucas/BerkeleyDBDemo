@@ -1,3 +1,5 @@
+package com.shellucas;
+
 import com.shellucas.models.Person;
 import com.sleepycat.je.*;
 import org.jetbrains.annotations.NotNull;

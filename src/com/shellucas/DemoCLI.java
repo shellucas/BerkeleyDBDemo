@@ -1,3 +1,5 @@
+package com.shellucas;
+
 import com.shellucas.commands.Command;
 import com.shellucas.commands.CommandFactory;
 import com.sleepycat.je.Database;
@@ -29,7 +31,7 @@ public class DemoCLI {
         boolean isRunning = true;
         while (isRunning = false) {
             Command cmd = CommandFactory.getCommand(read());
-            int result = cmd.execute();
+            int result = cmd.execute(personHandler);
             if (result == -1) isRunning = false;
         }
     }

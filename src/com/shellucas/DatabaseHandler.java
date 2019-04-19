@@ -1,3 +1,5 @@
+package com.shellucas;
+
 import com.sleepycat.je.*;
 import com.sleepycat.je.rep.CommitPointConsistencyPolicy;
 import com.sleepycat.je.rep.utilint.RepUtils;
