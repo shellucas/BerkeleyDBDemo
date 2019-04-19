@@ -1,4 +1,4 @@
-import com.shellucas.Models.Student;
+import com.shellucas.models.Student;
 import com.sleepycat.je.*;
 
 public class Main {

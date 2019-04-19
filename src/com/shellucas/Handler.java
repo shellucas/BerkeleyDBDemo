@@ -1,4 +1,4 @@
-import com.shellucas.Models.Person;
+import com.shellucas.models.Person;
 import com.sleepycat.je.Database;
 import com.sleepycat.je.Environment;
 import org.jetbrains.annotations.NotNull;

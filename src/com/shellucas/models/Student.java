@@ -1,4 +1,4 @@
-package com.shellucas.Models;
+package com.shellucas.models;
 
 public class Student extends Person {
 	public Student(int id, String firstName, String lastName, int age) {
