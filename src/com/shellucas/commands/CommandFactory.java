@@ -3,6 +3,7 @@ package com.shellucas.commands;
 public class CommandFactory {
     public static Command getCommand(int cmd) {
         switch (cmd) {
+            case 0: System.exit(0);
             case 1: return new CreateCommand();
             case 2: return new GetCommand();
             case 3: return new UpdateCommand();
@@ -12,12 +13,11 @@ public class CommandFactory {
     }
     
     public static String getMenu() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("Commands:\n");
-        builder.append("1: Create\n");
-        builder.append("2: Read\n");
-        builder.append("3: Update\n");
-        builder.append("4: Delete\n");
-        return builder.toString();
+        return "Commands:\n" +
+                "0: Exit\n" +
+                "1: Create\n" +
+                "2: Read\n" +
+                "3: Update\n" +
+                "4: Delete";
     }
 }
