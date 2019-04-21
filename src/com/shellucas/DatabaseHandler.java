@@ -16,7 +16,6 @@ class DatabaseHandler {
     final DatabaseConfig dbConfig = new DatabaseConfig();
     dbConfig.setTransactional(true);
     dbConfig.setAllowCreate(true);
-    dbConfig.setSortedDuplicates(true);
     db = env.openDatabase(null, dbName, dbConfig);
     return db;
   }

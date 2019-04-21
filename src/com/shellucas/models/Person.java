@@ -2,6 +2,8 @@ package com.shellucas.models;
 
 import com.sleepycat.persist.model.Entity;
 import com.sleepycat.persist.model.PrimaryKey;
+import static com.sleepycat.persist.model.Relationship.*;
+import com.sleepycat.persist.model.SecondaryKey;
 
 import java.io.Serializable;
 import java.util.StringJoiner;
@@ -12,8 +14,10 @@ public abstract class Person implements Serializable {
 	@PrimaryKey
 	private int id;
 	
-	private String firstName;
 	private String lastName;
+	
+	private String firstName;
+	
 	private int age;
 
 	public Person(int id, String firstName, String lastName, int age) {
