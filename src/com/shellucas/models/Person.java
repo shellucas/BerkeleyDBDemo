@@ -11,6 +11,8 @@ import java.util.StringJoiner;
 @Entity
 public abstract class Person implements Serializable {
 	
+	private static int GLOBALID = 0;
+	
 	@PrimaryKey
 	private int id;
 	
@@ -19,7 +21,15 @@ public abstract class Person implements Serializable {
 	private String firstName;
 	
 	private int age;
-
+	
+	public Person(String firstName, String lastName, int age) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.age = age;
+		GLOBALID++;
+		this.id = GLOBALID;
+	}
+	
 	public Person(int id, String firstName, String lastName, int age) {
 		this.id = id;
 		this.firstName = firstName;

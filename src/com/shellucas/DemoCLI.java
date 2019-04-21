@@ -32,6 +32,7 @@ public class DemoCLI {
     System.out.println("%%%%%%%%%%%% BerkleyDB DEMO %%%%%%%%%%%%");
     boolean isRunning = true;
     while (isRunning) {
+      System.out.println(CommandFactory.getMenu());
       Command cmd = CommandFactory.getCommand(read());
       int result = cmd.execute(personHandler, env, db);
       if (result == -1) isRunning = false;

@@ -9,9 +9,9 @@ public class Main {
 	private static final String dbName = "DemoDatabase";
 
 	public static void main(String[] args) {
-//		DemoCLI demo = new DemoCLI();
-//		demo.start();
-    example();
+		DemoCLI demo = new DemoCLI();
+		demo.start();
+//    example();
 	}
 	
 	private static void example() {
