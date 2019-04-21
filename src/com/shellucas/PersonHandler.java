@@ -1,7 +1,15 @@
 package com.shellucas;
 
 import com.shellucas.models.Person;
+import com.sleepycat.bind.EntryBinding;
+import com.sleepycat.bind.serial.SerialBinding;
+import com.sleepycat.bind.serial.StoredClassCatalog;
+import com.sleepycat.bind.tuple.IntegerBinding;
 import com.sleepycat.je.*;
+import com.sleepycat.persist.EntityStore;
+import com.sleepycat.persist.StoreConfig;
+import com.sleepycat.persist.impl.Store;
+import com.sun.xml.internal.ws.api.databinding.Databinding;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -11,17 +19,11 @@ public class PersonHandler implements Handler<Person> {
   @Nullable
   public Person insert(@NotNull Person person, @NotNull Environment env, @NotNull Database db) {
     Transaction transaction = DatabaseHandler.createTransaction(env);
-    DatabaseEntry key = new DatabaseEntry(String.valueOf(person.getId()).getBytes());
-    DatabaseEntry data = null;
-    try {
-      data = new DatabaseEntry(Helpers.objectToBytes(person));
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    DatabaseEntry key = new DatabaseEntry();
+    IntegerBinding.intToEntry(person.getId(), key);
     
-    if (data == null) {
-      return null;
-    }
+    DatabaseEntry data = new DatabaseEntry();
+    EntryBinding<Person> dataBinding = bind(db, person, data);
     
     OperationStatus res = db.putNoOverwrite(transaction, key, data);
     
@@ -31,7 +33,7 @@ public class PersonHandler implements Handler<Person> {
       return null;
     } else {
       try {
-        person = (Person) Helpers.bytesToObject(data.getData());
+        person = dataBinding.entryToObject(data);
       } catch (Exception e) {
         e.printStackTrace();
       }
@@ -49,18 +51,12 @@ public class PersonHandler implements Handler<Person> {
     }
   
     Transaction transaction = DatabaseHandler.createTransaction(env);
-    DatabaseEntry key = new DatabaseEntry(String.valueOf(person.getId()).getBytes());
-    DatabaseEntry data = null;
-    try {
-      data = new DatabaseEntry(Helpers.objectToBytes(person));
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    DatabaseEntry key = new DatabaseEntry();
+    IntegerBinding.intToEntry(person.getId(), key);
+    DatabaseEntry data = new DatabaseEntry();
   
-    if (data == null) {
-      return null;
-    }
-  
+    EntryBinding<Person> dataBinding = bind(db, person, data);
+    
     OperationStatus res = db.put(transaction, key, data);
   
     if (res != OperationStatus.SUCCESS) {
@@ -69,7 +65,7 @@ public class PersonHandler implements Handler<Person> {
       return null;
     } else {
       try {
-        person = (Person) Helpers.bytesToObject(data.getData());
+        person = dataBinding.entryToObject(data);
       } catch (Exception e) {
         e.printStackTrace();
       }
@@ -82,7 +78,8 @@ public class PersonHandler implements Handler<Person> {
   @Override
   public boolean delete(int id, @NotNull Environment env, @NotNull Database db) {
     Transaction transaction = DatabaseHandler.createTransaction(env);
-    DatabaseEntry key = new DatabaseEntry(String.valueOf(id).getBytes());
+    DatabaseEntry key = new DatabaseEntry();
+    IntegerBinding.intToEntry(id, key);
   
     OperationStatus res = db.delete(transaction, key);
   
@@ -99,7 +96,11 @@ public class PersonHandler implements Handler<Person> {
   public Person get(int id, @NotNull Environment env, @NotNull Database db) {
     Transaction transaction = DatabaseHandler.createTransaction(env);
     DatabaseEntry data = new DatabaseEntry();
-    DatabaseEntry key = new DatabaseEntry(String.valueOf(id).getBytes());
+    DatabaseEntry key = new DatabaseEntry();
+    IntegerBinding.intToEntry(id, key);
+  
+    StoredClassCatalog catalog = new StoredClassCatalog(db);
+    EntryBinding<Person> dataBinding = new SerialBinding<>(catalog, Person.class);
     
     OperationStatus res = db.get(transaction, key, data, null);
     if (res != OperationStatus.SUCCESS) {
@@ -110,12 +111,19 @@ public class PersonHandler implements Handler<Person> {
       transaction.commit();
       Person person = null;
       try {
-        person = (Person) Helpers.bytesToObject(data.getData());
+        person = dataBinding.entryToObject(data);
       } catch (Exception e) {
         e.printStackTrace();
       }
       return person;
     }
+  }
+  
+  public EntryBinding<Person> bind(Database db, Person person, DatabaseEntry data) {
+    StoredClassCatalog catalog = new StoredClassCatalog(db);
+    EntryBinding<Person> dataBinding = new SerialBinding<>(catalog, Person.class);
+    dataBinding.objectToEntry(person, data);
+    return dataBinding;
   }
   
 }
