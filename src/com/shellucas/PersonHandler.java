@@ -43,7 +43,7 @@ public class PersonHandler implements Handler<Person> {
       } catch (Exception e) {
         e.printStackTrace();
       }
-      System.out.println(key + "/" + data);
+      //System.out.println(key + "/" + data);
       transaction.commit();
       return person;
     }
@@ -100,7 +100,7 @@ public class PersonHandler implements Handler<Person> {
       System.out.println("Error: " + res.toString());
       return null;
     } else {
-      System.out.println(key + "/" + data);
+      //System.out.println(key + "/" + data);
       transaction.commit();
       Person person = null;
       try {
