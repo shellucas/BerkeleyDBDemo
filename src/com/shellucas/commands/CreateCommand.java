@@ -22,6 +22,8 @@ public class CreateCommand implements Command {
     System.out.println(" Enter age: ");
     int age = scanner.nextInt();
     Student s = new Student(first, last, age);
+
+    // INSERTION
     Student res = (Student) ph.insert(s, env, db);
     
     if (res != null)

@@ -26,7 +26,13 @@ public class PersonHandler implements Handler<Person> {
     EntryBinding<Person> dataBinding = bind(db, person, data);
     
     OperationStatus res = db.putNoOverwrite(transaction, key, data);
-    
+
+    return getPerson(person, transaction, key, data, dataBinding, res);
+  }
+
+  @Nullable
+  private Person getPerson(@NotNull Person person, Transaction transaction, DatabaseEntry key, DatabaseEntry data,
+                           EntryBinding<Person> dataBinding, OperationStatus res) {
     if (res != OperationStatus.SUCCESS) {
       System.out.println("Error: " + res.toString());
       transaction.abort();
@@ -42,7 +48,7 @@ public class PersonHandler implements Handler<Person> {
       return person;
     }
   }
-  
+
   @Override
   public Person put(@NotNull Person person, @NotNull Environment env, @NotNull Database db) {
     if (get(person.getId(), env, db) == null) {
@@ -58,21 +64,8 @@ public class PersonHandler implements Handler<Person> {
     EntryBinding<Person> dataBinding = bind(db, person, data);
     
     OperationStatus res = db.put(transaction, key, data);
-  
-    if (res != OperationStatus.SUCCESS) {
-      System.out.println("Error: " + res.toString());
-      transaction.abort();
-      return null;
-    } else {
-      try {
-        person = dataBinding.entryToObject(data);
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-      System.out.println(key + "/" + data);
-      transaction.commit();
-      return person;
-    }
+
+    return getPerson(person, transaction, key, data, dataBinding, res);
   }
   
   @Override

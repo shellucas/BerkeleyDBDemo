@@ -2,13 +2,11 @@ package com.shellucas;
 
 import com.sleepycat.je.*;
 import com.sleepycat.je.rep.CommitPointConsistencyPolicy;
-import com.sleepycat.je.rep.utilint.RepUtils;
 
 import java.io.File;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
